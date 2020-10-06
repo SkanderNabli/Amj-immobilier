@@ -1,33 +1,38 @@
-<div class="wrapper">
-    <div class="image">
-        <h3>
-            <a href="#" class="tag category">{{ prop.formatcategory }}</a>
-            <a href="{{ path('property.show',{ id: prop.id, slug: prop.slug}) }}" class="title">{{ prop.title }}</a>
-            <span class="tag">{{ prop.surface }} m²</span>
-        </h3>
-        <a href="{{ path('property.show',{ id: prop.id, slug: prop.slug}) }}" class="image-wrapper background-image">
-            <img src="{% if prop.image %}{{ vich_uploader_asset(prop.image, 'imageFile') | imagine_filter('thumb') }}{% else %}{{ asset('assets/img/image-04.jpg') | imagine_filter('thumb') }}{% endif %}" alt="">
-        </a>
-    </div>
-    <!--end image-->
-    <h4 class="location">
-        <a href="#">{{ prop.city }}, {{ prop.postalCode }}</a>
-    </h4>
-    <div class="price">€ {{ prop.formatPrice }}</div>
-    <div class="meta">
-        <figure>
-            <i class="fa fa-calendar-o"></i>{{ prop.createdAt | date("m.d.Y") }}
-        </figure>
-        <figure>
-            <a href="#">
-                <i class="fa fa-user"></i>{{ prop.author.username }}
+{% cache 'prop' ~ prop.id prop.updateAt %}
+    <div class="wrapper">
+        <div class="image">
+            <h3>
+                <a href="#" class="tag category">{{ prop.formatcategory }}</a>
+                <a href="{{ path('property.show',{ id: prop.id, slug: prop.slug}) }}" class="title">{{ prop.title }}</a>
+                <span class="tag">{{ prop.surface }} m²</span>
+            </h3>
+            <a href="{{ path('property.show',{ id: prop.id, slug: prop.slug}) }}"
+               class="image-wrapper background-image">
+                <img src="{% if prop.image %}{{ vich_uploader_asset(prop.image, 'imageFile') | imagine_filter('thumb') }}{% else %}{{ asset('assets/img/image-04.jpg') | imagine_filter('thumb') }}{% endif %}"
+                     alt="">
             </a>
-        </figure>
+        </div>
+        <!--end image-->
+        <h4 class="location">
+            <a href="#">{{ prop.city }}, {{ prop.postalCode }}</a>
+        </h4>
+        <div class="price">€ {{ prop.formatPrice }}</div>
+        <div class="meta">
+            <figure>
+                <i class="fa fa-calendar-o"></i>{{ prop.createdAt | date("m.d.Y") }}
+            </figure>
+            <figure>
+                <a href="#">
+                    <i class="fa fa-user"></i>{{ prop.author.username }}
+                </a>
+            </figure>
+        </div>
+        <!--end meta-->
+        <div class="description">
+            <p>{{ prop.descr }}</p>
+        </div>
+        <!--end description-->
+        <a href="{{ path('property.show',{id: prop.id, slug: prop.slug}) }}"
+           class="detail text-caps underline">Detail</a>
     </div>
-    <!--end meta-->
-    <div class="description">
-        <p>{{ prop.descr }}</p>
-    </div>
-    <!--end description-->
-    <a href="{{ path('property.show',{id: prop.id, slug: prop.slug}) }}" class="detail text-caps underline">Detail</a>
-</div>
+{% endcache %}

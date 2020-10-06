@@ -366,6 +366,7 @@ class Property
     {
         $this->created_at = $created_at;
 
+
         return $this;
     }
 
@@ -439,11 +440,11 @@ class Property
     }
 
     /**
-     * @return string
+     * @return integer
      */
-    public function getUpdateAt(): ?string
+    public function getUpdateAt(): ?int
     {
-        return $this->updateAt;
+        return strtotime($this->updateAt);
     }
 
     /**
@@ -453,7 +454,6 @@ class Property
     {
         $time = new \DateTime('now');
         $this->updateAt = $time->format('Y-m-d H:i:s');
-
 
         return $this;
     }

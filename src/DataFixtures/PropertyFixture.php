@@ -59,6 +59,7 @@ class PropertyFixture extends Fixture
                 ->setAddress($factory->streetAddress)
                 ->setPostalCode($factory->numerify($factory->randomDigitNotNull.'####'))
                 ->setCreatedAt($factory->date($format = 'Y-m-d H:i:s', $max = 'now'))
+                ->setUpdateAt()
                 ->setFeatured($factory->boolean)
                 ->setAuthor($user)
                 ->setCategory($factory->numberBetween(0,count(Property::CATEGORY)-1))

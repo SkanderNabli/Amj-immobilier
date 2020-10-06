@@ -92,7 +92,10 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            $property->setAuthor($this->getUser());
+            $property
+                ->setAuthor($this->getUser())
+                ->setUpdateAt()
+            ;
             $this->em->persist($property);
             $this->em->flush();
             $this->addFlash('success', 'Addition has been made.');
