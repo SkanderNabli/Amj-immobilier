@@ -167,7 +167,7 @@ class Property
 
     /**
      * @Assert\All({
-     *   @Assert\Image(mimeTypes="image/jpeg")
+     *   @Assert\Image(mimeTypes={"image/png", "image/jpg", "image/jpeg"})
      * })
      */
     private $imageFiles;
