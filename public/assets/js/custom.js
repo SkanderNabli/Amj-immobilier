@@ -438,6 +438,8 @@ function simpleMap(latitude, longitude, markerImage, mapTheme, mapElement, marke
 //Autocomplete ---------------------------------------------------------------------------------------------------------
 
 function autoComplete(map, marker){
+    var geocoder = new google.maps.Geocoder();
+
     if( $("#city").length ){
 
         let input = document.getElementById('city');
@@ -497,6 +499,7 @@ function autoComplete(map, marker){
         let input = document.getElementById('prop_address');
         let autocomplete = new google.maps.places.Autocomplete(input);
         autocomplete.bindTo('bounds', map);
+
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
             let place = autocomplete.getPlace();
 
@@ -510,13 +513,14 @@ function autoComplete(map, marker){
                 map.setZoom(17);
             }
             mapCenter = place.geometry.location;
+
             if( marker ){
                 marker.setPosition(place.geometry.location);
                 marker.setVisible(true);
                 $("#prop_lat").val(marker.getPosition().lat());
                 $("#prop_lng").val(marker.getPosition().lng());
-
             }
+
             $("#prop_address").val(place.address_components[0].long_name +' '+ place.address_components[1].long_name);
             $("#prop_postal_code").val(place.address_components[6].long_name);
             $("#prop_city").val(place.address_components[2].long_name);
@@ -532,6 +536,29 @@ function autoComplete(map, marker){
             }
         });
 
+        google.maps.event.addListener(marker, 'dragend', function() {
+
+            geocoder.geocode({
+                latLng: marker.getPosition()
+            }, function(responses, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    let position = responses[0];
+
+                    $("#prop_lat").val(position.geometry.location.lat());
+                    $("#prop_lng").val(position.geometry.location.lng());
+
+                    $("#prop_address").val(position.address_components[0].long_name +' '+ position.address_components[1].long_name);
+                    $("#prop_postal_code").val(position.address_components[6].long_name);
+                    $("#prop_city").val(position.address_components[2].long_name);
+
+                } else {
+                    console.log('Cannot determine address at this location.');
+                }
+            });
+
+        });
+
+
         function success(position) {
             var locationCenter = new google.maps.LatLng( position.coords.latitude, position.coords.longitude);
             map.setCenter( locationCenter );
@@ -540,33 +567,28 @@ function autoComplete(map, marker){
                 marker.setPosition(locationCenter);
             }
 
-            var geocoder = new google.maps.Geocoder();
             geocoder.geocode({
                 "latLng": locationCenter
             }, function (results, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
                     let lat = results[0].geometry.location.lat(),
                         lng = results[0].geometry.location.lng(),
-                        placeName = results[0].address_components[0].long_name,
-                        latlng = new google.maps.LatLng(lat, lng);
+                        placeName = results[0].address_components;
 
-                    $("#prop_address").val(results[0].address_components[0].long_name +' '+ results[0].address_components[1].long_name);
-                    $("#prop_postal_code").val(results[0].address_components[6].long_name);
-                    $("#prop_city").val(results[0].address_components[2].long_name);
-                    console.log(results[0].address_components);
-                    var latitudeInput = $('#latitude');
-                    var longitudeInput = $("#longitude");
-                    if( latitudeInput.length ){
-                        latitudeInput.val( marker.getPosition().lat() );
-                    }
-                    if( longitudeInput.length ){
-                        longitudeInput.val( marker.getPosition().lng() );
-                    }
+                    $("#prop_address").val(placeName[0].long_name +' '+ placeName[1].long_name);
+                    $("#prop_postal_code").val(placeName[6].long_name);
+                    $("#prop_city").val(placeName[2].long_name);
+
+                    $("#prop_lat").val(lat);
+                    $("#prop_lng").val(lng);
                 }
+
             });
+
 
         }
     }
+
 
 }
 
