@@ -1,0 +1,85 @@
+<header class="hero">
+    <div class="hero-wrapper">
+        <!--============ Secondary Navigation ===============================================================-->
+        {% include "header/navbarUser.html.twig" %}
+        <!--============ End Secondary Navigation ===========================================================-->
+
+        <!--============ Main Navigation ====================================================================-->
+        <div class="main-navigation">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light justify-content-between">
+                    <a class="navbar-brand" href="{{ path('home') }}">
+                        <img src="{{ asset('assets/img/logo.png') }}" alt="">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
+                            aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbar">
+                        <!--Main navigation list-->
+                        {% include "header/navbar.html.twig" %}
+                        <!--Main navigation list-->
+                    </div>
+                    <!--end navbar-collapse-->
+                    {% if profilMenu is not defined %}
+                    <a href="#collapseMainSearchForm" class="main-search-form-toggle" data-toggle="collapse"  aria-expanded="false" aria-controls="collapseMainSearchForm">
+                        <i class="fa fa-search"></i>
+                        <i class="fa fa-close"></i>
+                    </a>
+                    {% endif %}
+                    <!--end main-search-form-toggle-->
+                </nav>
+                <!--end navbar-->
+                {% if profilMenu is not defined %}
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Library</a></li>
+                    <li class="breadcrumb-item active">Data</li>
+                </ol>
+                {% endif %}
+                <!--end breadcrumb-->
+            </div>
+            <!--end container-->
+        </div>
+        <!--============ End Main Navigation ================================================================-->
+        <!--============ Hero Form ==========================================================================-->
+        <div class="collapse" id="collapseMainSearchForm">
+            {% include("header/_formSearch.html.twig") %}
+        </div>
+        <!--end collapse-->
+        <!--============ End Hero Form ======================================================================-->
+        <!--============ Page Title =========================================================================-->
+        <div class="page-title">
+            {% if profilMenu is defined %}
+                <div class="container">
+                    <h1>{{ profilMenu }}</h1>
+                </div>
+            {% else %}
+
+                <div class="container clearfix">
+                    <div class="float-left float-xs-none">
+                        <h1>{{ property.title }}
+                            <span class="tag">T{{ property.rooms }}</span>
+                        </h1>
+                        <h4 class="location">
+                            <a href="#">{{ property.city }}, {{ property.postalCode }}</a>
+                        </h4>
+                    </div>
+                    <div class="float-right float-xs-none price">
+                        <div class="number">{{ property.formatPrice }} €</div>
+                        <div class="id opacity-50">
+                            <strong>ID: </strong>3479
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <!--end container-->
+        </div>
+
+
+        <!--============ End Page Title =====================================================================-->
+        <div class="background"></div>
+        <!--end background-->
+    </div>
+    <!--end hero-wrapper-->
+</header>

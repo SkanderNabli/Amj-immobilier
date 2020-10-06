@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    {% include 'header/headerShowProperty.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <section class="content">
+        <section class="block">
+            <div class="container">
+                <section>
+                    <div class="alert alert-warning" role="alert">
+                        <h2 class="alert-heading">You don't have an account!</h2>
+                        <p>You can submit only 1 ad at a time. To submit more, you need to
+                            <a href="{{ path('login') }}" class="link"><strong>Sign In</strong></a> or
+                            <a href="{{ path('register') }}" class="link"><strong>Register</strong></a></p>
+                    </div>
+                </section>
+            </div>
+            <!--end container-->
+        </section>
+        <!--end block-->
+    </section>
+{% endblock %}

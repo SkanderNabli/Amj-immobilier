@@ -1,0 +1,193 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <section class="content">
+        <!--============ Featured Ads ===========================================================================-->
+        <section class="block">
+            <div class="container">
+                <h2>Featured Ads</h2>
+                <div class="items grid grid-xl-3-items grid-lg-3-items grid-md-2-items">
+                    {% for prop in featured %}
+                    <div class="item">
+                        {% include 'pages/_vignette.html.twig' %}
+                    </div>
+                    <!--end item-->
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        <!--============ End Featured Ads =======================================================================-->
+        <!--============ Features Steps =========================================================================-->
+        <section class="block">
+            <div class="container">
+                <div class="block">
+                    <h2>Selling With Us Is Easy</h2>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="feature-box">
+                                <figure>
+                                    <img src="{{ asset('assets/icons/feature-user.png') }}" alt="">
+                                    <span>1</span>
+                                </figure>
+                                <h3>Create an Account</h3>
+                                <p>Etiam molestie viverra dui vitae mattis. Ut velit est</p>
+                            </div>
+                            <!--end feature-box-->
+                        </div>
+                        <!--end col-->
+                        <div class="col-md-3">
+                            <div class="feature-box">
+                                <figure>
+                                    <img src="{{ asset('assets/icons/feature-upload.png') }}" alt="">
+                                    <span>2</span>
+                                </figure>
+                                <h3>Submit Your Ad</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            </div>
+                            <!--end feature-box-->
+                        </div>
+                        <!--end col-->
+                        <div class="col-md-3">
+                            <div class="feature-box">
+                                <figure>
+                                    <img src="{{ asset('assets/icons/feature-like.png') }}" alt="">
+                                    <span>3</span>
+                                </figure>
+                                <h3>Make a Deal</h3>
+                                <p>Nunc ultrices eu urna quis cursus. Sed viverra ullamcorper</p>
+                            </div>
+                            <!--end feature-box-->
+                        </div>
+                        <!--end col-->
+                        <div class="col-md-3">
+                            <div class="feature-box">
+                                <figure>
+                                    <img src="{{ asset('assets/icons/feature-wallet.png') }}" alt="">
+                                    <span>4</span>
+                                </figure>
+                                <h3>Enjoy the Money!</h3>
+                                <p>Integer nisl ipsum, sodales sed scelerisque nec, aliquet sit</p>
+                            </div>
+                            <!--end feature-box-->
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end block-->
+            </div>
+            <!--end container-->
+            <div class="background" data-background-color="#fff"></div>
+            <!--end background-->
+        </section>
+        <!--end block-->
+        <!--============ End Features Steps =====================================================================-->
+        <!--============ Recent Ads =============================================================================-->
+        <section class="block">
+            <div class="container">
+                <h2>Recent Ads</h2>
+                <div class="items grid grid-xl-4-items grid-lg-3-items grid-md-2-items">
+                    {% for prop in proprietes %}
+                    <div class="item">
+                        {% if prop.featured == true %}
+                        <div class="ribbon-featured">Featured</div>
+                        <!--end ribbon-->
+                        {% endif %}
+                        {% include 'pages/_vignette.html.twig' %}
+                    </div>
+                    <!--end item-->
+                    {% endfor %}
+                </div>
+            </div>
+            <!--end container-->
+        </section>
+        <!--end block-->
+        <!--============ End Recent Ads =========================================================================-->
+        <!--============ Newsletter =============================================================================-->
+        <section class="block">
+            <div class="container">
+                <div class="box has-dark-background">
+                    <div class="row align-items-center justify-content-center d-flex">
+                        <div class="col-md-10 py-5">
+                            <h2>Get the Latest Ads in Your Inbox</h2>
+                            <form class="form email">
+                                <div class="form-row">
+                                    <div class="col-md-4 col-sm-4">
+                                        <div class="form-group">
+                                            <label for="newsletter_category" class="col-form-label">Category?</label>
+                                            <select name="newsletter_category" id="newsletter_category"
+                                                    data-placeholder="Select Category">
+                                                <option value="">Select Category</option>
+                                                <option value="1">Computers</option>
+                                                <option value="2">Real Estate</option>
+                                                <option value="3">Cars & Motorcycles</option>
+                                                <option value="4">Furniture</option>
+                                                <option value="5">Pets & Animals</option>
+                                            </select>
+                                        </div>
+                                        <!--end form-group-->
+                                    </div>
+                                    <!--end col-md-4-->
+                                    <div class="col-md-7 col-sm-7">
+                                        <div class="form-group">
+                                            <label for="newsletter_email" class="col-form-label">Your Email</label>
+                                            <input name="newsletter_email" type="email" class="form-control"
+                                                   id="newsletter_email" placeholder="Your Email">
+                                        </div>
+                                        <!--end form-group-->
+                                    </div>
+                                    <!--end col-md-9-->
+                                    <div class="col-md-1 col-sm-1">
+                                        <div class="form-group">
+                                            <label class="invisible">.</label>
+                                            <button type="submit" class="btn btn-primary width-100"><i
+                                                        class="fa fa-chevron-right"></i></button>
+                                        </div>
+                                        <!--end form-group-->
+                                    </div>
+                                    <!--end col-md-9-->
+                                </div>
+                            </form>
+                            <!--end form-->
+                        </div>
+                    </div>
+                    <div class="background">
+                        <div class="background-image">
+                            <img src="{{ asset('assets/img/hero-background-image-01.jpg') }}" alt="">
+                        </div>
+                        <!--end background-image-->
+                    </div>
+                    <!--end background-->
+                </div>
+                <!--end box-->
+            </div>
+            <!--end container-->
+        </section>
+        <!--end block-->
+
+        <section class="block">
+            <div class="container">
+                <div class="d-flex align-items-center justify-content-around">
+                    <a href="#">
+                        <img src="{{ asset('assets/img/partner-1.png') }}" alt="">
+                    </a>
+                    <a href="#">
+                        <img src="{{ asset('assets/img/partner-2.png') }}" alt="">
+                    </a>
+                    <a href="#">
+                        <img src="{{ asset('assets/img/partner-3.png') }}" alt="">
+                    </a>
+                    <a href="#">
+                        <img src="{{ asset('assets/img/partner-4.png') }}" alt="">
+                    </a>
+                    <a href="#">
+                        <img src="{{ asset('assets/img/partner-5.png') }}" alt="">
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+    </section>
+{% endblock %}
+

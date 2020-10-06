@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    {% include 'header/headerShowProperty.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <section class="content">
+        <section class="block">
+            <div class="container">
+                {% include 'admin/dashboard/_form.html.twig' %}
+            </div>
+            <!--end container-->
+        </section>
+        <!--end block-->
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ asset('assets/js/jQuery.MultiFile.min.js') }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        let latitude =  43.611330 ;
+        let longitude = 3.876442;
+        let markerImage = "/assets/img/map-marker.png";
+        let mapTheme = "light";
+        let mapElement = "map-submit";
+        let markerDrag = true;
+        simpleMap(latitude, longitude, markerImage, mapTheme, mapElement, markerDrag);
+    </script>
+
+{% endblock %}
+
+
+

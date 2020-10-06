@@ -1,0 +1,96 @@
+<header class="hero">
+    <div class="hero-wrapper">
+        <!--============ Secondary Navigation ===============================================================-->
+        {% include "header/navbarUser.html.twig" %}
+        <!--============ End Secondary Navigation ===========================================================-->
+
+        <!--============ Main Navigation ====================================================================-->
+        <div class="main-navigation">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light justify-content-between">
+                    <a class="navbar-brand" href="{{ path('home') }}">
+                        <img src="{{ asset('assets/img/logo.png') }}" alt="">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
+                            aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbar">
+                        <!--Main navigation list-->
+                        {% include "header/navbar.html.twig" %}
+                        <!--Main navigation list-->
+                    </div>
+                    <!--end navbar-collapse-->
+                    {% if formTier is defined and formTier == false %}
+                    <a href="#collapseMainSearchForm" class="main-search-form-toggle" data-toggle="collapse"  aria-expanded="false" aria-controls="collapseMainSearchForm">
+                        <i class="fa fa-search"></i>
+                        <i class="fa fa-close"></i>
+                    </a>
+                    {% endif %}
+                    <!--end main-search-form-toggle-->
+                </nav>
+                <!--end navbar-->
+                {% if formTier is defined and formTier == false %}
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Library</a></li>
+                        <li class="breadcrumb-item active">Data</li>
+                    </ol>
+                {% endif %}
+                <!--end breadcrumb-->
+            </div>
+            <!--end container-->
+        </div>
+        <!--============ End Main Navigation ================================================================-->
+        {% if formTier is defined and formTier == false %}
+            <div class="collapse" id="collapseMainSearchForm">
+                {% include("header/_formSearch.html.twig") %}
+            </div>
+        {% endif %}
+        <!--============ Page Title =========================================================================-->
+        <div class="page-title">
+            <div class="container{% if prop is defined %} clearfix{% endif %}">
+                {% if formTier is defined and formTier == true %}
+                <h1 class="center">
+                    <a href="{{ path('property.annonces') }}">Buy</a>, <a href="{{ path('admin.property.create')}}">Sell</a> or <a href="#">Find</a> your
+                    property.
+                </h1>
+                {% endif %}
+                {% if prop is defined %}
+                <div class="float-left float-xs-none">
+                    <h1>{{ prop.title }}
+                        <span class="tag">T{{ prop.rooms }}</span>
+                    </h1>
+                    <h4 class="location">
+                        <a href="#">{{ prop.city }}, {{ prop.postalCode }}</a>
+                    </h4>
+                </div>
+                <div class="float-right float-xs-none price">
+                    <div class="number">{{ prop.formatPrice }} €</div>
+                    <div class="id opacity-50">
+                        <strong>ID: </strong>3479
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <!--end container-->
+        </div>
+        <!--============ End Page Title =====================================================================-->
+        <!--============ Hero Form ==========================================================================-->
+        {% if formTier is defined and formTier == true %}
+            {% include("header/_formSearch.html.twig") %}
+        {% endif %}
+        
+        <!--============ End Hero Form ======================================================================-->
+        <div class="background">
+            {% if formTier is defined and formTier == true %}
+            <div class="background-image">
+                <img src="{{ asset('assets/img/hero-background-image-11.jpg') }}" alt="">
+            </div>
+            <!--end background-image-->
+            {% endif %}
+        </div>
+        <!--end background-->
+    </div>
+    <!--end hero-wrapper-->
+</header>

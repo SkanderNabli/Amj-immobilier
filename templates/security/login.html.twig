@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    {% include 'header/headerShowProperty.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <section class="content">
+        <section class="block">
+            <div class="container">
+                {% if error %}
+                <div class="center height-100px">
+                    <div class="alert alert-danger">
+                        {{ error.messageKey | trans(error.messageData, 'security') }}
+                    </div>
+                </div>
+                {% endif %}
+                <div class="row justify-content-center">
+                    <div class="col-md-4">
+                        <form action="{{ path('login') }}" class="form clearfix" method="post">
+                            <div class="form-group">
+                                <label for="username" class="col-form-label required">Username</label>
+                                <input name="_username" type="text" class="form-control" id="username" value="{{ lastuser }}" placeholder="Your Username" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="password" class="col-form-label required">Password</label>
+                                <input name="_password" type="password" class="form-control" id="password" placeholder="Password" required>
+                            </div>
+                            <!--end form-group-->
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <label>
+                                    <input type="checkbox" name="_remember_me" value="1">
+                                    Remember Me
+                                </label>
+                                <button type="submit" class="btn btn-primary">Sign In</button>
+                            </div>
+                        </form>
+                        <hr>
+                        <p>
+                            Troubles with signing? <a href="#" class="link">Click here.</a>
+                        </p>
+                        <p>
+                            Need to <a href="{{ path('register') }}" class="link">register</a>?
+                        </p>
+                    </div>
+                    <!--end col-md-6-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end container-->
+        </section>
+        <!--end block-->
+    </section>
+{% endblock %}

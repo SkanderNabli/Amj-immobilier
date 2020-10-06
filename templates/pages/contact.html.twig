@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <section class="content">
+        <section class="block">
+            <div class="map height-500px" id="map-contact"></div>
+            <div class="container">
+                {% for message in app.flashes('success') %}
+                    <div class="center height-100px">
+                        <div class="alert alert-success">
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2>Get In Touch</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec tincidunt arcu, sit
+                            amet fermentum sem. Class aptent taciti sociosqu ad litora
+                        </p>
+                        <br>
+                        <figure class="with-icon">
+                            <i class="fa fa-map-marker"></i>
+                            <span>2519 Stanley Avenue<br>Huntington, NY 11743 </span>
+                        </figure>
+                        <br>
+                        <figure class="with-icon">
+                            <i class="fa fa-phone"></i>
+                            <span>+1 516-480-4273</span>
+                        </figure>
+                        <figure class="with-icon">
+                            <i class="fa fa-envelope"></i>
+                            <a href="#">hello@example.com</a>
+                        </figure>
+                        <figure class="with-icon">
+                            <i class="fa fa-envelope"></i>
+                            <a href="#">support@example.com</a>
+                        </figure>
+                    </div>
+                    <!--end col-md-4-->
+                    <div class="col-md-8">
+                        <h2>Contact Form</h2>
+                        {{ form_start(formContact,{'attr':{'class':'form email'}}) }}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="name" class="col-form-label required">Your Name</label>
+                                        {{ form_widget(formContact.name) }}
+{#                                        <input name="name" type="text" class="form-control" id="name" placeholder="Your Name" required>#}
+                                    </div>
+                                    <!--end form-group-->
+                                </div>
+                                <!--end col-md-6-->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email" class="col-form-label required">Your Email</label>
+                                        {{ form_widget(formContact.email) }}
+{#                                        <input name="email" type="email" class="form-control" id="email" placeholder="Your Email" required>#}
+                                    </div>
+                                    <!--end form-group-->
+                                </div>
+                                <!--end col-md-6-->
+                            </div>
+                            <!--end row-->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Subject</label>
+                                        {{ form_widget(formContact.subject) }}
+                                        {#                                <input name="subject" type="text" class="form-control" id="subject" placeholder="Subject">#}
+                                    </div>
+                                    <!--end form-group-->
+                                </div>
+                                <!--end col-md-6-->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label required">Your Number</label>
+                                        {{ form_widget(formContact.tel) }}
+                                        {#                                        <input name="email" type="email" class="form-control" id="email" placeholder="Your Email" required>#}
+                                    </div>
+                                    <!--end form-group-->
+                                </div>
+                                <!--end col-md-6-->
+                            </div>
+                            <!--end row-->
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="message" class="col-form-label required">Your Message</label>
+                                {{ form_widget(formContact.message) }}
+{#                                <textarea name="message" id="message" class="form-control" rows="4" placeholder="Your Message" required></textarea>#}
+                            </div>
+                            <!--end form-group-->
+                            <button type="submit" class="btn btn-primary float-right">Send Message</button>
+                       {{ form_end(formContact) }}
+                        <!--end form-->
+                    </div>
+                    <!--end col-md-8 -->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end container-->
+        </section>
+        <!--end block-->
+    </section>
+{% endblock %}
+

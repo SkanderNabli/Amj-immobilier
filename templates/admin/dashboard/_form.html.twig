@@ -1,0 +1,370 @@
+{{ form_start(formAddProp,{"attr": {"class": "form form-submit"}}) }}
+
+<section>
+    <h2>Basic Information</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                {{ form_row(formAddProp.title) }}
+            </div>
+            <!--end form-group-->
+        </div>
+        <!--end col-md-8-->
+        <div class="col-md-4">
+            <div class="form-group">
+                {{ form_row(formAddProp.price) }}
+                <span class="input-group-addon">€</span>
+            </div>
+            <!--end form-group-->
+        </div>
+    </div>
+
+</section>
+<!--end basic information-->
+<section>
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Category</h2>
+            <div class="form-group">
+                {{ form_row(formAddProp.category) }}</div>
+            <!--end form-group-->
+        </div>
+        <!--end col-md-4-->
+        <div class="col-md-8">
+            <h2>Features</h2>
+            <div class="form-slides" id="category-tabs">
+                <div class="form-slide default">
+                    <h3>Please Select a Category</h3>
+                </div>
+
+                <div class="form-slide" id="0">
+                    <h3>Home</h3>
+                    <figure class="category-icon">
+                        <img src="{{ asset('assets/icons/home.png') }}" alt="">
+                    </figure>
+                    <!--end category-icon-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form_row(formAddProp.surface) }}
+                                <span class="input-group-addon">m²</span>
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-5-->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form_row(formAddProp.heat) }}
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-5-->
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form_row(formAddProp.floor) }}
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-5-->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form_row(formAddProp.rooms) }}
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form_row(formAddProp.bedrooms) }}
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                    </div>
+                    <!--end row-->
+
+                    <h4>Property Features</h4>
+                    <ul class="list-unstyled columns-2">
+                        {% for option in formAddProp.options %}
+
+                            <li>
+                                <label>
+                                    {{ form_widget(option) }}
+                                    {{ option.vars.label }}
+                                </label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <!--end form-group-->
+                </div>
+                <!--end home.form-slide-->
+
+            </div>
+            <!--end form-slides-->
+        </div>
+        <!--end col-md-8-->
+    </div>
+    <!--end row-->
+</section>
+
+<section>
+    <h2>Details</h2>
+    <div class="form-group">
+        {{ form_row(formAddProp.descr) }}
+    </div>
+    <!--end form-group-->
+</section>
+
+<section>
+    <h2>Location</h2>
+    <div class="form-group">
+        {{ form_row(formAddProp.address) }}
+        <span class="geo-location input-group-addon" data-toggle="tooltip" data-placement="top"
+              title="Find My Position"><i class="fa fa-map-marker"></i></span>
+
+    </div>
+    <!--end form-group-->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_row(formAddProp.city) }}
+            </div>
+            <!--end form-group-->
+        </div>
+        <!--end col-md-6-->
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_row(formAddProp.postal_code) }}
+            </div>
+            <!--end form-group-->
+        </div>
+        <!--end col-md-6-->
+    </div>
+    <!--end row-->
+    <label>Map</label>
+    <div class="map height-400px" id="map-submit"></div>
+</section>
+
+<section>
+    <h2>Gallery</h2>
+    <div class="file-uploaded-images">
+
+        {% for img in property.images %}
+
+            <div class="image">
+                <a href="{{ path('admin.image.delete', {'id': img.id}) }}" class="ad-remove"
+                   data-delete="Delete-{{ img.id }}" data-token="{{ csrf_token("delete" ~ img.id) }}">
+                    <figure class="remove-image"><i class="fa fa-close"></i></figure>
+                </a>
+
+                <img src="{{ vich_uploader_asset(img, 'imageFile') | imagine_filter('thumb') }}" alt="">
+            </div>
+
+        {% endfor %}
+
+    </div>
+    <div class="file-upload-previews"></div>
+    <div class="file-upload">
+        {{ form_widget(formAddProp.imageFiles) }}
+        <span><i class="fa fa-plus-circle"></i>Click or drag images here</span>
+    </div>
+
+</section>
+
+<section>
+    <h2>Additional Information</h2>
+    <h3>Opening Hours<span class="note">(optional)</span></h3>
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="accordion-heading-1">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion"
+                       href="#accordion-collapse-1" aria-expanded="false"
+                       aria-controls="accordion-collapse-1">
+                        <i class="fa fa-clock-o"></i>Add opening hours
+                    </a>
+                </h4>
+            </div>
+            <!--end panel-heading-->
+            <div id="accordion-collapse-1" class="panel-collapse collapse show" role="tabpanel"
+                 aria-labelledby="accordion-heading-1">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 horizontal-input-title">
+                            <strong>Monday</strong>
+                        </div>
+                        <!--end col-md-4-->
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="open_hours[]"
+                                       placeholder="Open" value="08:00">
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-4-->
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="close_hours[]"
+                                       placeholder="Close" value="18:00">
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-4-->
+                    </div>
+                    <!--end row-->
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 horizontal-input-title">
+                            <strong>Tuesday</strong>
+                        </div>
+                        <!--end col-md-4-->
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="open_hours[]"
+                                       placeholder="Open" value="08:00">
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-4-->
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="close_hours[]"
+                                       placeholder="Close" value="18:00">
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-4-->
+                    </div>
+                    <!--end row-->
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 horizontal-input-title">
+                            <strong>Wednesday</strong>
+                        </div>
+                        <!--end col-md-4-->
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="open_hours[]"
+                                       placeholder="Open" value="08:00">
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-4-->
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="close_hours[]"
+                                       placeholder="Close" value="18:00">
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-4-->
+                    </div>
+                    <!--end row-->
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 horizontal-input-title">
+                            <strong>Thursday</strong>
+                        </div>
+                        <!--end col-md-4-->
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="open_hours[]"
+                                       placeholder="Open" value="08:00">
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-4-->
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="close_hours[]"
+                                       placeholder="Close" value="18:00">
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-4-->
+                    </div>
+                    <!--end row-->
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 horizontal-input-title">
+                            <strong>Friday</strong>
+                        </div>
+                        <!--end col-md-4-->
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="open_hours[]"
+                                       placeholder="Open" value="08:00">
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-4-->
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="close_hours[]"
+                                       placeholder="Close" value="22:00">
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-4-->
+                    </div>
+                    <!--end row-->
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 horizontal-input-title">
+                            <strong>Saturday</strong>
+                        </div>
+                        <!--end col-md-4-->
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="open_hours[]"
+                                       placeholder="Open" value="08:00">
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-4-->
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="close_hours[]"
+                                       placeholder="Close" value="22:00">
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-4-->
+                    </div>
+                    <!--end row-->
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 horizontal-input-title">
+                            <strong>Sunday</strong>
+                        </div>
+                        <!--end col-md-4-->
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="open_hours[]"
+                                       placeholder="Open" value="Closed">
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-4-->
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="close_hours[]"
+                                       placeholder="Close" value="Closed">
+                            </div>
+                            <!--end form-group-->
+                        </div>
+                        <!--end col-md-4-->
+                    </div>
+                    <!--end row-->
+                </div>
+            </div>
+            <!--end panel-collapse-->
+        </div>
+        <!--end panel-->
+    </div>
+    <!--end panel-group-->
+</section>
+
+<section class="clearfix">
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary large icon float-right">Valider<i
+                    class="fa fa-chevron-right"></i></button>
+    </div>
+</section>
+
+{{ form_end(formAddProp) }}
+<!--end form-submit-->
