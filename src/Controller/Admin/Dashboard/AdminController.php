@@ -9,11 +9,16 @@ use App\Repository\PropertyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+/**
+ * @Route("/admin")
+ */
 class AdminController extends AbstractController
 {
 
@@ -33,7 +38,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("admin/my-ads", name="admin.myads")
+     * @Route("/my-ads", name="admin.myads")
      * @param PaginatorInterface $paginator
      * @param Request $request
      * @return Response
@@ -55,7 +60,29 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("admin/edit/{slug}-{id}", name="admin.property.edit", methods="GET|POST", requirements={"slug": "[a-zA-Z0-9\-]*", "id": "[0-9]*"})
+     * @Route("/bookmarks", name="admin.bookmarks")
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
+     */
+    public function bookmarks(PaginatorInterface $paginator, Request $request):Response
+    {
+
+        $prop = $paginator->paginate(
+            $this->repository->findBookmarks($this->getUser()),
+            $request->query->getInt('page',1),
+            12
+        );
+
+        return $this->render('admin/dashboard/bookmarks.html.twig', [
+            "property" => $prop,
+            "profilMenu" => "bookmarks"
+        ]);
+
+    }
+
+    /**
+     * @Route("/edit/{slug}-{id}", name="admin.property.edit", methods="GET|POST", requirements={"slug": "[a-zA-Z0-9\-]*", "id": "[0-9]*"})
      * @param Property $property
      * @param Request $request
      * @return Response
@@ -82,7 +109,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * * @Route("/admin/create", name="admin.property.create")
+     * * @Route("/create", name="admin.property.create")
      * @param Request $request
      * @return RedirectResponse|Response
      */
@@ -109,7 +136,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * * @Route("/admin/delete/{id}", name="admin.property.delete", methods="DELETE")
+     * * @Route("/delete/{id}", name="admin.property.delete", methods="DELETE")
      * @param Property $property
      * @param Request $request
      * @return RedirectResponse
@@ -126,7 +153,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/sold/{id}", name="admin.property.sold")
+     * @Route("/sold/{id}", name="admin.property.sold")
      * @param Property $property
      * @param Request $request
      * @return RedirectResponse
@@ -146,6 +173,70 @@ class AdminController extends AbstractController
         }
 
         return $this->redirectToRoute('admin.myads');
+    }
+
+    /**
+     * * @Route("/favoris/add/{id}", name="admin.favoris.add", methods="POST")
+     * @param Property $property
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function addFavoris(Property $property, Request $request){
+
+        $data = json_decode($request->getContent(),true);
+
+        if($this->isCsrfTokenValid('add' . $property->getId(), $data['_token'])){
+            $search = false;
+            $favoris = $this->getUser()->getFavoris()->getValues();
+
+            foreach ($favoris as $favori ){
+                if ($favori->getId() == $property->getId()){
+                    $search = true;
+                }
+            }
+
+            if ($search){
+                $property->removeFavori($this->getUser());
+                $this->em->flush();
+                return new JsonResponse([
+                    'success' => true,
+                    'action' => "remove"
+                ]);
+            }else{
+                $property->addFavori($this->getUser());
+                $this->em->flush();
+                return new JsonResponse([
+                    'success' => true,
+                    'action' => "add"
+                ]);
+            }
+
+        }
+
+        return new JsonResponse(['error' => 'Token invalide'],400);
+    }
+
+    /**
+     * * @Route("/favoris/remove/{id}", name="admin.favoris.remove", methods="POST")
+     * @param Property $property
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function removeFavoris(Property $property, Request $request){
+
+        $data = json_decode($request->getContent(),true);
+
+
+        if($this->isCsrfTokenValid('remove' . $property->getId(), $data['_token'])){
+            $property->removeFavori($this->getUser());
+            $this->em->flush();
+            return new JsonResponse([
+                'success' => true,
+                'action' => "remove"
+                ]);
+        }
+
+        return new JsonResponse(['error' => 'Token invalide'],400);
     }
 
 

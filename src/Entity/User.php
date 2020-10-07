@@ -93,9 +93,15 @@ class User implements UserInterface,\Serializable
      */
     private $author;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Property::class, mappedBy="favoris")
+     */
+    private $favoris;
+
     public function __construct()
     {
         $this->author = new ArrayCollection();
+        $this->favoris = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -288,6 +294,34 @@ class User implements UserInterface,\Serializable
             if ($author->getAuthor() === $this) {
                 $author->setAuthor(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Property[]
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(Property $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris[] = $favori;
+            $favori->addFavori($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(Property $favori): self
+    {
+        if ($this->favoris->contains($favori)) {
+            $this->favoris->removeElement($favori);
+            $favori->removeFavori($this);
         }
 
         return $this;

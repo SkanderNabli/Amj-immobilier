@@ -7,6 +7,7 @@ use App\Entity\Search;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Property|null find($id, $lockMode = null, $lockVersion = null)
@@ -136,6 +137,23 @@ class PropertyRepository extends ServiceEntityRepository
             ->andWhere('property.featured = true')
             ->setMaxResults($maxResult)
             ->orderBy('RAND()')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @param int $maxResult
+     * @param UserInterface $user
+     * @return Property[]
+     */
+    public function findBookmarks(UserInterface $user, int $maxResult=12 ) : array
+    {
+        return $this->queryFindVisible()
+            ->innerJoin('property.favoris', "fav")
+            ->andWhere('fav = :user')
+            ->setParameter("user", $user->getId())
+            ->setMaxResults($maxResult)
             ->getQuery()
             ->getResult()
             ;

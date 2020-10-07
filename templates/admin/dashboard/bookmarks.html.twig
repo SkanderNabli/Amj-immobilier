@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    {% include 'header/headerShowProperty.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <section class="content">
+        <section class="block">
+            <div class="container">
+                {% for message in app.flashes('success') %}
+                    <div class="center height-100px">
+                        <div class="alert alert-success">
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="row">
+                    <div class="col-md-3">
+                        {% include "admin/dashboard/menu.html.twig" %}
+                    </div>
+                    <!--end col-md-3-->
+                    <div class="col-md-9">
+                        <!--============ Section Title===================================================================-->
+                        <div class="section-title clearfix">
+                            <div class="float-left float-xs-none">
+                                <label class="mr-3 align-text-bottom">Sort by: </label>
+                                <select onChange="window.location.href=this.value" name="sorting" id="sorting" class="small width-200px" data-placeholder="Default Sorting" >
+                                    <option value="">Default Sorting</option>
+                                    <option value="" >New/Oldest First</option>
+                                    <option value="{{ knp_pagination_sortable(property, "created", "property.created_at") }}" >New/Oldest First</option>
+                                    <option value="{{ knp_pagination_sortable(property, "price", "property.price") }}" >Highest/Lowest Price </option>
+                                </select>
+
+                            </div>
+                            <div class="float-right d-xs-none thumbnail-toggle">
+                                <a href="#" class="change-class active" data-change-from-class="list"
+                                   data-change-to-class="grid" data-parent-class="items">
+                                    <i class="fa fa-th"></i>
+                                </a>
+                                <a href="#" class="change-class " data-change-from-class="grid"
+                                   data-change-to-class="list" data-parent-class="items">
+                                    <i class="fa fa-th-list"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <!--============ Items ==========================================================================-->
+                        <div class="items grid compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
+                            {% for prop in property %}
+                                <div class="item">
+                                    {% if prop.sold %}
+                                        <div class="ribbon-diagonal">
+                                            <div class="ribbon-diagonal__inner">
+                                                <span>Sold</span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if prop.featured %}
+                                        <div class="ribbon-featured">Featured</div>
+                                        <!--end ribbon-->
+                                    {% endif %}
+                                    <div class="wrapper">
+                                        <div class="image">
+                                            <h3>
+                                                <a href="#" class="tag category">Home & Decor</a>
+                                                <a href="{{ path('property.show', {id: prop.id, slug: prop.slug}) }}"
+                                                   class="title">{{ prop.title }}</a>
+                                                <span class="tag">T{{ prop.rooms }}</span>
+                                            </h3>
+                                            <a href="{{ path('property.show', {id: prop.id, slug: prop.slug}) }}"
+                                               class="image-wrapper background-image">
+                                                <img src="{% if prop.image %}{{ vich_uploader_asset(prop.image, 'imageFile') }}{% else %}{{ asset('assets/img/image-04.jpg') }}{% endif %}" alt="">
+                                            </a>
+                                        </div>
+                                        <!--end image-->
+                                        <h4 class="location">
+                                            <a href="#">{{ prop.city }}, {{ prop.postalCode }}</a>
+                                        </h4>
+                                        <div class="price">{{ prop.formatPrice }} €</div>
+                                        <div class="admin-controls">
+                                            <a class="red" href="{{ path('admin.favoris.add', {'id': prop.id}) }}" data-favoris="add-{{ prop.id }}" data-token="{{ csrf_token("add" ~ prop.id) }}">
+                                                <i  class="fa fa-star"></i>Remove
+                                            </a>
+                                        </div>
+                                        <!--end admin-controls-->
+                                        <div class="description">
+                                            <p>{{ prop.descr }}</p>
+                                        </div>
+                                        <!--end description-->
+                                        <a href="{{ path('property.show', {id: prop.id, slug: prop.slug}) }}"
+                                           class="detail text-caps underline">Detail</a>
+                                    </div>
+                                </div>
+                                <!--end item-->
+                            {% endfor %}
+                        </div>
+                        <!--end items-->
+                        <div class="page-pagination">
+                            {{ knp_pagination_render(property) }}
+                        </div>
+                    </div>
+                    <!--end col-md-9-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end container-->
+        </section>
+        <!--end block-->
+    </section>
+{% endblock %}
+
+
+

@@ -25,6 +25,7 @@ class Property
         $this->featured = 0;
         $this->options = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->favoris = new ArrayCollection();
     }
 
     const HEAT = ['Gas', 'Electricity'];
@@ -181,6 +182,11 @@ class Property
      * @ORM\Column(type="float", scale= 5 , precision=8)
      */
     private $lng;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=user::class, inversedBy="favoris")
+     */
+    private $favoris;
 
 
     public function getId(): ?int
@@ -542,6 +548,32 @@ class Property
     public function setLng(float $lng): self
     {
         $this->lng = $lng;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|user[]
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(user $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris[] = $favori;
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(user $favori): self
+    {
+        if ($this->favoris->contains($favori)) {
+            $this->favoris->removeElement($favori);
+        }
 
         return $this;
     }

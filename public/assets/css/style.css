@@ -33,7 +33,9 @@ input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-
+.red{
+    color: #ff0000 !important;
+}
 .additional-info {
     padding-left: 1.8rem;
     padding-right: 1.8rem;
@@ -2410,6 +2412,16 @@ hr {
     margin-top: 2rem;
     margin-bottom: 2rem;
 }
+
+.favoris{
+    margin-right: 16px;
+    font-size: 14px;
+    top: 5px;
+    position: relative;
+    float: right;
+    color: #7a7c7f;
+}
+
 figure {}
 figure.with-icon {
     position: relative;
@@ -2675,7 +2687,7 @@ input[type="text"], input[type="email"], input[type="date"], input[type="time"],
     border: .1rem solid rgba(0,0,0, .15);
     border-radius: .3rem;
     color: #363636;
-    transition: .3s;
+    /*transition: .3s;*/
     transform-style: preserve-3d;
     -webkit-appearance: none;
     background-color: #fff;

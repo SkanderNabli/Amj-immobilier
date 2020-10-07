@@ -10,11 +10,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("admin/image")
+ */
 class ImageController extends AbstractController
 {
 
     /**
-     * * @Route("/{id}", name="admin.image.delete", methods="DELETE")
+     * * @Route("/delete/{id}", name="admin.image.delete", methods="DELETE")
      * @param Image $image
      * @param Request $request
      * @return JsonResponse

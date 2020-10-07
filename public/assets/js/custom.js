@@ -459,37 +459,12 @@ function autoComplete(map, marker){
         $('.geo-location').on("click", function(e) {
             e.preventDefault();
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(success);
+                navigator.geolocation.getCurrentPosition(successSearch);
             } else {
                 console.log('Geo Location is not supported');
             }
         });
 
-        function success(position) {
-            let locationCenter = new google.maps.LatLng( position.coords.latitude, position.coords.longitude);
-
-            let geocoder = new google.maps.Geocoder();
-            geocoder.geocode({
-                "latLng": locationCenter
-            }, function (results, status) {
-                if (status === google.maps.GeocoderStatus.OK) {
-
-                    let latInput = $('#lat');
-                    let lngInput = $("#lng");
-
-                    $("#city").val(results[0].formatted_address);
-
-                    if( latInput.length ){
-                        latInput.val( position.coords.latitude );
-                    }
-                    if( lngInput.length ){
-                        lngInput.val( position.coords.longitude );
-                    }
-
-                }
-            });
-
-        }
     }
     if( $("#prop_address").length ){
         if( !map ){
@@ -559,34 +534,73 @@ function autoComplete(map, marker){
         });
 
 
-        function success(position) {
-            var locationCenter = new google.maps.LatLng( position.coords.latitude, position.coords.longitude);
-            map.setCenter( locationCenter );
-            map.setZoom(13);
-            if(marker){
-                marker.setPosition(locationCenter);
-            }
 
-            geocoder.geocode({
-                "latLng": locationCenter
-            }, function (results, status) {
-                if (status === google.maps.GeocoderStatus.OK) {
-                    let lat = results[0].geometry.location.lat(),
-                        lng = results[0].geometry.location.lng(),
-                        placeName = results[0].address_components;
+    }
 
-                    $("#prop_address").val(placeName[0].long_name +' '+ placeName[1].long_name);
-                    $("#prop_postal_code").val(placeName[6].long_name);
-                    $("#prop_city").val(placeName[2].long_name);
 
-                    $("#prop_lat").val(lat);
-                    $("#prop_lng").val(lng);
+    if ($("#prop_lng").val() === ""){
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success);
+        } else {
+            console.log('Geo Location is not supported');
+        }
+
+
+    }
+
+    function successSearch(position) {
+        let locationCenter = new google.maps.LatLng( position.coords.latitude, position.coords.longitude);
+
+        let geocoder = new google.maps.Geocoder();
+        geocoder.geocode({
+            "latLng": locationCenter
+        }, function (results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+
+                let latInput = $('#lat');
+                let lngInput = $("#lng");
+
+                $("#city").val(results[0].formatted_address);
+
+                if( latInput.length ){
+                    latInput.val( position.coords.latitude );
+                }
+                if( lngInput.length ){
+                    lngInput.val( position.coords.longitude );
                 }
 
-            });
+            }
+        });
 
+    }
 
+    function success(position) {
+        var locationCenter = new google.maps.LatLng( position.coords.latitude, position.coords.longitude);
+        map.setCenter( locationCenter );
+        map.setZoom(13);
+        if(marker){
+            marker.setPosition(locationCenter);
         }
+
+        geocoder.geocode({
+            "latLng": locationCenter
+        }, function (results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+                let lat = results[0].geometry.location.lat(),
+                    lng = results[0].geometry.location.lng(),
+                    placeName = results[0].address_components;
+
+                $("#prop_address").val(placeName[0].long_name +' '+ placeName[1].long_name);
+                $("#prop_postal_code").val(placeName[6].long_name);
+                $("#prop_city").val(placeName[2].long_name);
+
+                $("#prop_lat").val(lat);
+                $("#prop_lng").val(lng);
+            }
+
+        });
+
     }
 
 
@@ -608,6 +622,37 @@ function previewImage(input) {
         }
     }
 }
+
+// Favoris-Button ------------------------------------------------------------------------------------------------------------
+
+document.querySelectorAll('[data-favoris]').forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault()
+
+        fetch(a.getAttribute('href'), {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/json'
+            },
+            body : JSON.stringify({
+                '_token': a.dataset.token
+            })
+        }).then(response => response.json())
+            .then(data => {
+                if (data.success){
+                    if(data.action === "add"){
+                        a.classList.add("red");
+                    }else{
+                        a.classList.remove("red");
+                    }
+                }else{
+                    console.log(data.error)
+                }
+            })
+            .catch(e=>console.log(e))
+    })
+})
 
 // Viewport ------------------------------------------------------------------------------------------------------------
 

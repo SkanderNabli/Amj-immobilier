@@ -55,6 +55,7 @@ class PropertyController extends AbstractController
             12
         );
 
+
         return $this->render('property/showAll.html.twig', [
             "property" => $prop,
             "formTier" => true,
