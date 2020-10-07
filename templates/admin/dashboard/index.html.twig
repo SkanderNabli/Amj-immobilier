@@ -27,7 +27,6 @@
                                 <label class="mr-3 align-text-bottom">Sort by: </label>
                                 <select onChange="window.location.href=this.value" name="sorting" id="sorting" class="small width-200px" data-placeholder="Default Sorting" >
                                     <option value="">Default Sorting</option>
-                                    <option value="" >New/Oldest First</option>
                                     <option value="{{ knp_pagination_sortable(property, "created", "property.created_at") }}" >New/Oldest First</option>
                                     <option value="{{ knp_pagination_sortable(property, "price", "property.price") }}" >Highest/Lowest Price </option>
                                 </select>

@@ -642,9 +642,11 @@ document.querySelectorAll('[data-favoris]').forEach(a => {
             .then(data => {
                 if (data.success){
                     if(data.action === "add"){
-                        a.classList.add("red");
-                    }else{
                         a.classList.remove("red");
+                        a.classList.add("white");
+                    }else{
+                        a.classList.remove("white");
+                        a.classList.add("red");
                     }
                 }else{
                     console.log(data.error)

@@ -47,7 +47,7 @@ class AdminController extends AbstractController
     {
 
         $prop = $paginator->paginate(
-            $this->repository->queryFindAll(),
+            $this->repository->findMyAds($this->getUser()),
             $request->query->getInt('page',1),
             12
         );
@@ -67,6 +67,7 @@ class AdminController extends AbstractController
      */
     public function bookmarks(PaginatorInterface $paginator, Request $request):Response
     {
+
 
         $prop = $paginator->paginate(
             $this->repository->findBookmarks($this->getUser()),

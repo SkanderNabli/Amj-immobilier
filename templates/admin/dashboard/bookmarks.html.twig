@@ -27,27 +27,28 @@
                                 <label class="mr-3 align-text-bottom">Sort by: </label>
                                 <select onChange="window.location.href=this.value" name="sorting" id="sorting" class="small width-200px" data-placeholder="Default Sorting" >
                                     <option value="">Default Sorting</option>
-                                    <option value="" >New/Oldest First</option>
                                     <option value="{{ knp_pagination_sortable(property, "created", "property.created_at") }}" >New/Oldest First</option>
                                     <option value="{{ knp_pagination_sortable(property, "price", "property.price") }}" >Highest/Lowest Price </option>
                                 </select>
 
                             </div>
                             <div class="float-right d-xs-none thumbnail-toggle">
-                                <a href="#" class="change-class active" data-change-from-class="list"
+                                <a href="#" class="change-class" data-change-from-class="list"
                                    data-change-to-class="grid" data-parent-class="items">
                                     <i class="fa fa-th"></i>
                                 </a>
-                                <a href="#" class="change-class " data-change-from-class="grid"
+                                <a href="#" class="change-class active" data-change-from-class="grid"
                                    data-change-to-class="list" data-parent-class="items">
                                     <i class="fa fa-th-list"></i>
                                 </a>
                             </div>
                         </div>
+
                         <!--============ Items ==========================================================================-->
-                        <div class="items grid compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
+                        <div class="items list compact grid-xl-3-items grid-lg-2-items grid-md-2-items">
                             {% for prop in property %}
-                                <div class="item">
+
+                                <div class="item {% if prop.sold %}item-sold{% endif %}">
                                     {% if prop.sold %}
                                         <div class="ribbon-diagonal">
                                             <div class="ribbon-diagonal__inner">
@@ -55,6 +56,12 @@
                                             </div>
                                         </div>
                                     {% endif %}
+                                    <div class="ribbon-vertical">
+                                        <a class="white" href="{{ path('admin.favoris.add', {'id': prop.id}) }}" data-favoris="add-{{ prop.id }}" data-token="{{ csrf_token("add" ~ prop.id) }}">
+                                            <i class="fa fa-star"></i>
+                                        </a>
+
+                                    </div>
                                     {% if prop.featured %}
                                         <div class="ribbon-featured">Featured</div>
                                         <!--end ribbon-->
@@ -77,11 +84,21 @@
                                             <a href="#">{{ prop.city }}, {{ prop.postalCode }}</a>
                                         </h4>
                                         <div class="price">{{ prop.formatPrice }} €</div>
-                                        <div class="admin-controls">
-                                            <a class="red" href="{{ path('admin.favoris.add', {'id': prop.id}) }}" data-favoris="add-{{ prop.id }}" data-token="{{ csrf_token("add" ~ prop.id) }}">
-                                                <i  class="fa fa-star"></i>Remove
-                                            </a>
+                                        <div class="meta">
+                                            <figure>
+                                                <i class="fa fa-calendar-o"></i>02.05.2017
+                                            </figure>
+                                            <figure>
+                                                <a href="#">
+                                                    <i class="fa fa-user"></i>Jane Doe
+                                                </a>
+                                            </figure>
                                         </div>
+{#                                        <div class="admin-controls">#}
+{#                                            <a class="red" href="{{ path('admin.favoris.add', {'id': prop.id}) }}" data-favoris="add-{{ prop.id }}" data-token="{{ csrf_token("add" ~ prop.id) }}">#}
+{#                                                <i  class="fa fa-star"></i>Remove#}
+{#                                            </a>#}
+{#                                        </div>#}
                                         <!--end admin-controls-->
                                         <div class="description">
                                             <p>{{ prop.descr }}</p>

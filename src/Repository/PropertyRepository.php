@@ -143,19 +143,32 @@ class PropertyRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param int $maxResult
      * @param UserInterface $user
-     * @return Property[]
+     * @return Query
      */
-    public function findBookmarks(UserInterface $user, int $maxResult=12 ) : array
+    public function findBookmarks(UserInterface $user ) : Query
     {
-        return $this->queryFindVisible()
+
+        return $this->createQueryBuilder('property')
+            ->orderBy('property.created_at', 'DESC')
             ->innerJoin('property.favoris', "fav")
             ->andWhere('fav = :user')
             ->setParameter("user", $user->getId())
-            ->setMaxResults($maxResult)
             ->getQuery()
-            ->getResult()
+            ;
+    }
+
+    /**
+     * @param UserInterface $user
+     * @return Query
+     */
+    public function findMyAds(UserInterface $user ) : Query
+    {
+
+        return $this->queryFindVisible()
+            ->andWhere('property.author = :user')
+            ->setParameter("user", $user->getId())
+            ->getQuery()
             ;
     }
 
