@@ -8,7 +8,7 @@
     <a class="nav-link {% if profilMenu is defined and profilMenu == "bookmarks" %}active{% endif%} icon" href="{{ path('admin.bookmarks') }}">
         <i class="fa fa-star"></i>Bookmarks
     </a>
-    <a class="nav-link {% if profilMenu is defined and profilMenu == "" %}active{% endif%} icon" href="change-password.html">
+    <a class="nav-link {% if profilMenu is defined and profilMenu == "resetPsw" %}active{% endif%} icon" href="{{ path('admin.resetPsw') }}">
         <i class="fa fa-recycle"></i>Change Password
     </a>
     <a class="nav-link {% if profilMenu is defined and profilMenu == "" %}active{% endif%} icon" href="sold-items.html">

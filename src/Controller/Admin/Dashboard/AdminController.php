@@ -4,7 +4,9 @@
 namespace App\Controller\Admin\Dashboard;
 
 use App\Entity\Property;
+use App\Entity\User;
 use App\Form\PropType;
+use App\Form\ResetPasswordType;
 use App\Repository\PropertyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -14,6 +16,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 
 /**
@@ -22,6 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
 
+    private $encoder;
     /**
      * @var PropertyRepository
      */
@@ -31,9 +37,10 @@ class AdminController extends AbstractController
      */
     private $em;
 
-    public function __construct(PropertyRepository $repository, EntityManagerInterface $em)
+    public function __construct(UserPasswordEncoderInterface $encoder,PropertyRepository $repository, EntityManagerInterface $em)
     {
         $this->repository = $repository;
+        $this->encoder = $encoder;
         $this->em = $em;
     }
 
@@ -83,6 +90,43 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/reset-password", name="admin.resetPsw")
+     * @param Request $request
+     * @param UserInterface $user
+     * @return RedirectResponse|Response
+     */
+    public function resetPsw(Request $request, UserInterface $user)
+    {
+        if ($request->get("current_password") && $request->get('new_current_password') && $request->get('repeat_new_current_password') != null ){
+            
+            if(
+                $this->encoder->isPasswordValid($user, $request->get('current_password')) &&
+                ($request->get('new_current_password') === $request->get('repeat_new_current_password'))
+            ){
+
+                $user->setPassword(
+                    $this->encoder->encodePassword(
+                        $user,
+                        $request->get('new_current_password')
+                    )
+                );
+                $this->em->flush();
+                $this->addFlash('success', 'Modification was made.');
+
+                return $this->redirectToRoute('logout');
+
+            }
+        }
+
+
+
+        return $this->render("admin/dashboard/reset-password.html.twig",[
+            "profilMenu" => "resetPsw",
+        ]);
+
+    }
+
+    /**
      * @Route("/edit/{slug}-{id}", name="admin.property.edit", methods="GET|POST", requirements={"slug": "[a-zA-Z0-9\-]*", "id": "[0-9]*"})
      * @param Property $property
      * @param Request $request
@@ -92,7 +136,6 @@ class AdminController extends AbstractController
 
         $form = $this->createForm(PropType::class, $property);
         $form->handleRequest($request);
-
 
 
         if($form->isSubmitted() && $form->isValid()){
