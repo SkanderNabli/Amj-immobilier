@@ -6,7 +6,7 @@ namespace App\Controller\Admin\Dashboard;
 use App\Entity\Property;
 use App\Entity\User;
 use App\Form\PropType;
-use App\Form\ResetPasswordType;
+use App\Form\UserType;
 use App\Repository\PropertyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -122,6 +122,26 @@ class AdminController extends AbstractController
 
         return $this->render("admin/dashboard/reset-password.html.twig",[
             "profilMenu" => "resetPsw",
+        ]);
+
+    }
+
+    /**
+     * @Route("/edit-user", name="admin.editProfil")
+     * @param Request $request
+     * @param UserInterface $user
+     * @return RedirectResponse|Response
+     */
+    public function editProfil(Request $request, UserInterface $user)
+    {
+
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        return $this->render("admin/dashboard/edit-user.html.twig",[
+            "user" => $form->createView(),
+            "profilMenu" => "edit-user",
+
         ]);
 
     }

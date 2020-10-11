@@ -1,5 +1,5 @@
 <nav class="nav flex-column side-nav">
-    <a class="nav-link icon" href="my-profile.html">
+    <a class="nav-link {% if profilMenu is defined and profilMenu == "edit-user" %}active{% endif%} icon" href="{{ path('admin.editProfil') }}">
         <i class="fa fa-user"></i>My Profile
     </a>
     <a class="nav-link {% if profilMenu is defined and profilMenu == "My-ads" %}active{% endif%} icon" href="{{ path('admin.myads') }}">
